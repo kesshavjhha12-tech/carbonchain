@@ -57,8 +57,8 @@ contract CarbonChainToken is ERC1155, Ownable, ReentrancyGuard {
     mapping(uint256 => EscrowRecord) public escrows;
     uint256 public nextEscrowId = 1;
 
-    /// tokenId → burned (anti-double-count)
-    mapping(uint256 => bool) public burned;
+    /// tokenId → total burned quantity (anti-double-count)
+    mapping(uint256 => uint256) public burnedAmount;
 
     /// Task 1: tokenId → soilMoistureLevel (0 to 100 %)
     mapping(uint256 => uint256) public soilMoistureLevel;
@@ -110,7 +110,8 @@ contract CarbonChainToken is ERC1155, Ownable, ReentrancyGuard {
         uint256 speciesCount,
         address payable tankerWallet
     )
-        external
+        public
+        onlyOwner
         returns (uint256 tokenId)
     {
         tokenId = nextTokenId++;
@@ -139,8 +140,8 @@ contract CarbonChainToken is ERC1155, Ownable, ReentrancyGuard {
     }
 
     /// Backward compatible mint call
-    function mintCarbonCredit(uint256 qty, uint256 pricePerCredit) external returns (uint256 tokenId) {
-        return this.mintCarbonCreditAdvanced(qty, pricePerCredit, 10, payable(address(0)));
+    function mintCarbonCredit(uint256 qty, uint256 pricePerCredit) external onlyOwner returns (uint256 tokenId) {
+        return mintCarbonCreditAdvanced(qty, pricePerCredit, 10, payable(address(0)));
     }
 
     /**
@@ -188,8 +189,10 @@ contract CarbonChainToken is ERC1155, Ownable, ReentrancyGuard {
         uint256 escrowed = sellerTotal - upfront;
 
         // Transfer upfront to seller & protocol fee to treasury
-        listing.seller.transfer(upfront);
-        treasury.transfer(protocolFee);
+        (bool s1,) = listing.seller.call{value: upfront}("");
+        require(s1, "Seller transfer failed");
+        (bool s2,) = treasury.call{value: protocolFee}("");
+        require(s2, "Treasury transfer failed");
 
         // Lock escrow
         escrowId = nextEscrowId++;
@@ -221,7 +224,8 @@ contract CarbonChainToken is ERC1155, Ownable, ReentrancyGuard {
         require(address(this).balance >= record.amount, "Insufficient contract balance");
 
         record.released = true;
-        record.seller.transfer(record.amount);
+        (bool success,) = record.seller.call{value: record.amount}("");
+        require(success, "Escrow release transfer failed");
 
         emit EscrowReleased(escrowId, record.seller, record.amount);
     }
@@ -249,7 +253,8 @@ contract CarbonChainToken is ERC1155, Ownable, ReentrancyGuard {
         record.amount -= emergencyAmount;
         emergencyIrrigationTriggered[escrowId] = true;
 
-        tanker.transfer(emergencyAmount);
+        (bool success,) = tanker.call{value: emergencyAmount}("");
+        require(success, "Emergency irrigation transfer failed");
         emit EmergencyIrrigationActivated(escrowId, tanker, emergencyAmount);
     }
 
@@ -275,7 +280,8 @@ contract CarbonChainToken is ERC1155, Ownable, ReentrancyGuard {
         require(yieldAmount > 0, "No yield accumulated");
 
         caretakerPool[tokenId] = 0;
-        payable(msg.sender).transfer(yieldAmount);
+        (bool success,) = payable(msg.sender).call{value: yieldAmount}("");
+        require(success, "Caretaker yield transfer failed");
 
         emit CaretakerYieldClaimed(tokenId, msg.sender, yieldAmount);
     }
@@ -287,15 +293,15 @@ contract CarbonChainToken is ERC1155, Ownable, ReentrancyGuard {
     function payoutAuditorBounty(address payable auditor, string calldata parcelId) external onlyOwner nonReentrant {
         require(auditor != address(0), "Invalid auditor address");
         require(address(this).balance >= AUDITOR_BOUNTY, "Insufficient bounty funds");
-        auditor.transfer(AUDITOR_BOUNTY);
+        (bool success,) = auditor.call{value: AUDITOR_BOUNTY}("");
+        require(success, "Auditor bounty transfer failed");
         emit AuditorBountyPaid(auditor, AUDITOR_BOUNTY, parcelId);
     }
 
     function retireCredit(uint256 tokenId, uint256 qty, bytes32 burnTxHash) external nonReentrant {
         require(balanceOf(msg.sender, tokenId) >= qty, "Insufficient balance");
-        require(!burned[tokenId], "Already retired");
         _burn(msg.sender, tokenId, qty);
-        burned[tokenId] = true;
+        burnedAmount[tokenId] += qty;
         emit CreditsRetired(tokenId, msg.sender, qty, burnTxHash);
     }
 

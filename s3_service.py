@@ -4,6 +4,7 @@ Provides utilities for presigned file uploads and direct S3 object storage.
 """
 
 import os
+import re
 import logging
 import boto3
 from botocore.config import Config
@@ -27,6 +28,11 @@ def generate_presigned_upload_url(file_name, file_type, folder="evidence", expir
     and PDF licenses directly to S3 without passing massive payloads through Lambda.
     """
     clean_name = os.path.basename(file_name)
+    if not re.match(r'^[\w\-. ]+$', clean_name):
+        return {
+            "status": "ERROR",
+            "error": "Invalid filename: only alphanumeric, dash, dot, underscore, and space characters are allowed."
+        }
     key = f"{folder}/{clean_name}"
     
     try:
