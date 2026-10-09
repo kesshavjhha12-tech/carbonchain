@@ -102,7 +102,7 @@ def invoke_bedrock(prompt, system_prompt="You are Verde, an expert AI Climate Ad
         }
         
         # Try Claude 3.5 Sonnet, then fallback to Claude 3 Sonnet
-        model_id = "anthropic.claude-3-5-sonnet-20241022-v2:0"
+        model_id = os.environ.get("BEDROCK_MODEL_ID", "anthropic.claude-3-5-sonnet-20241022-v2:0")
         try:
             response = bedrock.invoke_model(
                 modelId=model_id,
@@ -185,7 +185,8 @@ def lambda_handler(event, context):
         
     try:
         body = json.loads(body_str) if body_str else {}
-    except Exception:
+    except Exception as e:
+        logger.warning(f"Malformed JSON body: {e} — body_str[:200]={body_str[:200]}")
         body = {}
 
     # 1. POST /api/upload-url or /upload-url
@@ -222,8 +223,11 @@ def lambda_handler(event, context):
     # 5. POST /api/agent or /agent or /chat (TASK 4: UHI Cooling & Wind-Vector Shielding Intelligence)
     if method == "POST" and (path in ["/api/agent", "/agent", "/chat"]):
         user_prompt = body.get("prompt") or body.get("message") or "What carbon projects should I support?"
-        lat = float(body.get("lat", 13.0827))
-        lng = float(body.get("lng", 80.2707))
+        try:
+            lat = max(-90, min(90, float(body.get("lat", 13.0827))))
+            lng = max(-180, min(180, float(body.get("lng", 80.2707))))
+        except (ValueError, TypeError):
+            lat, lng = 13.0827, 80.2707
         
         # 1. Query live AQI telemetry & dynamic urgency multiplier
         aqi_data = fetch_live_aqi(lat, lng)
@@ -253,8 +257,11 @@ def lambda_handler(event, context):
 
     # 6. GET/POST /drought-monitor or /api/drought-monitor (TASK 2)
     if path in ["/drought-monitor", "/api/drought-monitor"]:
-        lat = float(body.get("lat", 13.0827) if body else event.get("queryStringParameters", {}).get("lat", 13.0827))
-        lng = float(body.get("lng", 80.2707) if body else event.get("queryStringParameters", {}).get("lng", 80.2707))
+        try:
+            lat = max(-90, min(90, float(body.get("lat", 13.0827) if body else event.get("queryStringParameters", {}).get("lat", 13.0827))))
+            lng = max(-180, min(180, float(body.get("lng", 80.2707) if body else event.get("queryStringParameters", {}).get("lng", 80.2707))))
+        except (ValueError, TypeError):
+            lat, lng = 13.0827, 80.2707
         
         drought_data = check_drought_status(lat, lng)
         return make_response(200, {
