@@ -29,6 +29,152 @@ let MOCK_PROJECTS = [
   { id: 'p8', name: 'Tamil Nadu Energy Efficiency', type: 'ENERGY_EFFICIENCY', location: 'Chennai, Tamil Nadu', available_credits: 400, total_credits: 600, price_per_credit: 0.028, co2_tonnes: 400, verified: true, seller_name: 'EcoTech TN', vintage_year: 2023 },
 ];
 
+(function initExpandedGlobalProjects() {
+  MOCK_PROJECTS.forEach(p => {
+    p.data_status = (p.id === 'p7') ? 'DEMO' : 'VERIFIED';
+    p.region = (p.id === 'p1') ? 'americas' : 'asia';
+  });
+
+  const additionalProjects = [
+    { id: 'p9', name: 'Western Ghats Agroforestry', type: 'REFORESTATION', location: 'Wayanad, Kerala, India', region: 'asia', lat: 11.6854, lng: 76.1320, area: 4200, price: 0.045, verified: true, data_status: 'VERIFIED', score: 92, auditor: 'SGS', standard: 'Verra VCS' },
+    { id: 'p10', name: 'Thar Desert Sand Stabilization', type: 'BARREN_RESTORE', location: 'Jaisalmer, Rajasthan, India', region: 'asia', lat: 26.9124, lng: 70.9012, area: 15000, price: 0.032, verified: false, data_status: 'DEMO', score: 78, auditor: 'Pending', standard: 'Verra VCS' },
+    { id: 'p11', name: 'Meghalaya Sacred Forest Sanctuary', type: 'REFORESTATION', location: 'Shillong, Meghalaya, India', region: 'asia', lat: 25.5788, lng: 91.8933, area: 8500, price: 0.048, verified: true, data_status: 'VERIFIED', score: 95, auditor: 'Bureau Veritas', standard: 'Plan Vivo' },
+    { id: 'p12', name: 'Ladakh High Altitude Solar Park', type: 'SOLAR', location: 'Leh, Ladakh, India', region: 'asia', lat: 34.1526, lng: 77.5771, area: 3200, price: 0.038, verified: true, data_status: 'VERIFIED', score: 89, auditor: 'DNV GL', standard: 'Gold Standard' },
+    { id: 'p13', name: 'Assam Tea Estate Biochar Project', type: 'BARREN_RESTORE', location: 'Tezpur, Assam, India', region: 'asia', lat: 26.2006, lng: 92.9376, area: 2100, price: 0.035, verified: false, data_status: 'DEMO', score: 81, auditor: 'SCS Global', standard: 'CAR' },
+    { id: 'p14', name: 'Telangana Soil Carbon Enrichment', type: 'BARREN_RESTORE', location: 'Hyderabad, Telangana, India', region: 'asia', lat: 17.3850, lng: 78.4867, area: 5400, price: 0.029, verified: false, data_status: 'DEMO', score: 77, auditor: 'Pending', standard: 'Verra VCS' },
+    { id: 'p15', name: 'Karnataka Western Ghats Bamboo', type: 'REFORESTATION', location: 'Uttara Kannada, India', region: 'asia', lat: 14.9981, lng: 74.8315, area: 6800, price: 0.041, verified: true, data_status: 'VERIFIED', score: 90, auditor: 'TÜV Rheinland', standard: 'Gold Standard' },
+    { id: 'p16', name: 'Bhitarkanika Coastal Mangrove', type: 'OCEAN', location: 'Kendrapara, Odisha, India', region: 'asia', lat: 20.5012, lng: 86.7214, area: 9100, price: 0.052, verified: true, data_status: 'VERIFIED', score: 96, auditor: 'Bureau Veritas', standard: 'Verra VCS' },
+
+    { id: 'p17', name: 'Peru Tambopata Rainforest Preservation', type: 'REFORESTATION', location: 'Madre de Dios, Peru', region: 'americas', lat: -12.8341, lng: -69.2934, area: 45000, price: 0.049, verified: true, data_status: 'VERIFIED', score: 94, auditor: 'Rainforest Alliance', standard: 'Verra VCS' },
+    { id: 'p18', name: 'Sao Paulo Municipal Landfill Methane', type: 'METHANE', location: 'Sao Paulo, Brazil', region: 'americas', lat: -23.5505, lng: -46.6333, area: 1800, price: 0.037, verified: true, data_status: 'LIVE', score: 91, auditor: 'DNV GL', standard: 'Gold Standard' },
+    { id: 'p19', name: 'Atacama Desert High-Irradiance Solar', type: 'SOLAR', location: 'Antofagasta, Chile', region: 'americas', lat: -23.8634, lng: -69.1328, area: 14000, price: 0.033, verified: true, data_status: 'VERIFIED', score: 93, auditor: 'TÜV Süd', standard: 'Gold Standard' },
+    { id: 'p20', name: 'Patagonia Winds of Chubut', type: 'WIND', location: 'Chubut, Argentina', region: 'americas', lat: -45.8641, lng: -67.4965, area: 22000, price: 0.034, verified: false, data_status: 'DEMO', score: 83, auditor: 'SGS', standard: 'ACR' },
+    { id: 'p21', name: 'Medellin Green Canopy Corridors', type: 'URBAN_HEAT', location: 'Medellin, Colombia', region: 'americas', lat: 6.2442, lng: -75.5812, area: 3500, price: 0.042, verified: true, data_status: 'VERIFIED', score: 95, auditor: 'EY Climate', standard: 'Gold Standard' },
+    { id: 'p22', name: 'Ecuador Choco Cloud Forest Canopy', type: 'REFORESTATION', location: 'Pichincha, Ecuador', region: 'americas', lat: -0.1807, lng: -78.4678, area: 16000, price: 0.051, verified: true, data_status: 'VERIFIED', score: 97, auditor: 'Bureau Veritas', standard: 'Plan Vivo' },
+    { id: 'p23', name: 'Pantanal Biodiversity Protection', type: 'OCEAN', location: 'Mato Grosso, Brazil', region: 'americas', lat: -17.7834, lng: -57.1324, area: 62000, price: 0.046, verified: false, data_status: 'DEMO', score: 79, auditor: 'Pending', standard: 'Verra VCS' },
+    { id: 'p24', name: 'Valdivian Ancient Forest Sink', type: 'REFORESTATION', location: 'Los Rios, Chile', region: 'americas', lat: -39.8142, lng: -73.2459, area: 28000, price: 0.044, verified: true, data_status: 'VERIFIED', score: 91, auditor: 'SCS Global', standard: 'CAR' },
+
+    { id: 'p25', name: 'Pacific NW Redwood Conservation', type: 'REFORESTATION', location: 'California, USA', region: 'americas', lat: 41.2132, lng: -124.0046, area: 38000, price: 0.058, verified: true, data_status: 'LIVE', score: 98, auditor: 'CAR Registry', standard: 'CAR' },
+    { id: 'p26', name: 'Mojave Concentrated Solar Field', type: 'SOLAR', location: 'California, USA', region: 'americas', lat: 35.0110, lng: -115.4734, area: 12500, price: 0.036, verified: true, data_status: 'VERIFIED', score: 92, auditor: 'DNV GL', standard: 'Gold Standard' },
+    { id: 'p27', name: 'Texas Panhandle Wind Corridor', type: 'WIND', location: 'Texas, USA', region: 'americas', lat: 35.2220, lng: -101.8313, area: 31000, price: 0.031, verified: true, data_status: 'VERIFIED', score: 88, auditor: 'SGS', standard: 'ACR' },
+    { id: 'p28', name: 'Everglades Mangrove Blue Carbon', type: 'OCEAN', location: 'Florida, USA', region: 'americas', lat: 25.2866, lng: -80.8987, area: 24000, price: 0.062, verified: true, data_status: 'VERIFIED', score: 96, auditor: 'Bureau Veritas', standard: 'Verra VCS' },
+    { id: 'p29', name: 'Iowa Soil Biochar & Agricultural Biogas', type: 'METHANE', location: 'Iowa, USA', region: 'americas', lat: 42.0329, lng: -93.5815, area: 9500, price: 0.039, verified: true, data_status: 'VERIFIED', score: 87, auditor: 'TÜV Rheinland', standard: 'CAR' },
+    { id: 'p30', name: 'Great Bear Rainforest Protection', type: 'REFORESTATION', location: 'British Columbia, Canada', region: 'americas', lat: 52.2341, lng: -128.0123, area: 85000, price: 0.064, verified: true, data_status: 'LIVE', score: 99, auditor: 'PwC Climate', standard: 'Verra VCS' },
+    { id: 'p31', name: 'Yucatan Mangrove Sanctuary', type: 'OCEAN', location: 'Quintana Roo, Mexico', region: 'americas', lat: 20.5080, lng: -87.2145, area: 17500, price: 0.047, verified: false, data_status: 'DEMO', score: 80, auditor: 'Pending', standard: 'Verra VCS' },
+    { id: 'p32', name: 'Los Angeles Cool Roof Urban Canopy', type: 'URBAN_HEAT', location: 'California, USA', region: 'americas', lat: 34.0522, lng: -118.2437, area: 4100, price: 0.043, verified: true, data_status: 'VERIFIED', score: 90, auditor: 'SCS Global', standard: 'Gold Standard' },
+
+    { id: 'p33', name: 'Black Forest Ecosystem Regeneration', type: 'REFORESTATION', location: 'Baden-Württemberg, Germany', region: 'europe', lat: 48.0000, lng: 8.2000, area: 18500, price: 0.046, verified: true, data_status: 'VERIFIED', score: 93, auditor: 'TÜV Süd', standard: 'Gold Standard' },
+    { id: 'p34', name: 'North Sea Offshore Wind Energy', type: 'WIND', location: 'Dogger Bank, UK', region: 'europe', lat: 54.5000, lng: 3.5000, area: 42000, price: 0.035, verified: true, data_status: 'LIVE', score: 95, auditor: 'DNV GL', standard: 'Gold Standard' },
+    { id: 'p35', name: 'Ruhr Valley Biogas & Coal Methane', type: 'METHANE', location: 'North Rhine-Westphalia, Germany', region: 'europe', lat: 51.4500, lng: 7.0100, area: 3800, price: 0.041, verified: true, data_status: 'VERIFIED', score: 89, auditor: 'TÜV Rheinland', standard: 'Verra VCS' },
+    { id: 'p36', name: 'Andalusia Concentrated Solar Array', type: 'SOLAR', location: 'Seville, Spain', region: 'europe', lat: 37.3800, lng: -5.9800, area: 11000, price: 0.034, verified: true, data_status: 'VERIFIED', score: 91, auditor: 'SGS', standard: 'Gold Standard' },
+    { id: 'p37', name: 'Milan Bosco Verticale Canopy Grid', type: 'URBAN_HEAT', location: 'Milan, Italy', region: 'europe', lat: 45.4642, lng: 9.1900, area: 1900, price: 0.048, verified: true, data_status: 'VERIFIED', score: 94, auditor: 'Bureau Veritas', standard: 'Gold Standard' },
+    { id: 'p38', name: 'Scottish Highlands Caledonian Pine', type: 'REFORESTATION', location: 'Cairngorms, UK', region: 'europe', lat: 57.1500, lng: -4.7000, area: 14200, price: 0.052, verified: true, data_status: 'VERIFIED', score: 96, auditor: 'Soil Association', standard: 'Woodland Carbon Code' },
+    { id: 'p39', name: 'Carpathian Old-Growth Sanctuary', type: 'REFORESTATION', location: 'Maramures, Romania', region: 'europe', lat: 47.5000, lng: 24.5000, area: 29000, price: 0.043, verified: false, data_status: 'DEMO', score: 82, auditor: 'Pending', standard: 'Verra VCS' },
+
+    { id: 'p40', name: 'Congo Basin Primary Forest REDD+', type: 'REFORESTATION', location: 'Équateur, DRC', region: 'africa', lat: -0.7832, lng: 22.9234, area: 120000, price: 0.047, verified: true, data_status: 'LIVE', score: 96, auditor: 'Bureau Veritas', standard: 'Verra VCS' },
+    { id: 'p41', name: 'Great Green Wall Sahel Anchor', type: 'BARREN_RESTORE', location: 'Niamey, Niger', region: 'africa', lat: 13.5116, lng: 2.1254, area: 75000, price: 0.030, verified: false, data_status: 'DEMO', score: 76, auditor: 'UNCCD Partner', standard: 'Gold Standard' },
+    { id: 'p42', name: 'Kilifi Coast Mangrove Blue Carbon', type: 'OCEAN', location: 'Kilifi, Kenya', region: 'africa', lat: -3.6307, lng: 39.8499, area: 11200, price: 0.054, verified: true, data_status: 'VERIFIED', score: 94, auditor: 'DNV GL', standard: 'Plan Vivo' },
+    { id: 'p43', name: 'Benban Desert Solar Complex', type: 'SOLAR', location: 'Aswan, Egypt', region: 'africa', lat: 24.4532, lng: 32.7412, area: 37000, price: 0.032, verified: true, data_status: 'VERIFIED', score: 93, auditor: 'TÜV Süd', standard: 'Gold Standard' },
+    { id: 'p44', name: 'Madagascar Mangrove & Coral Protection', type: 'OCEAN', location: 'Boeny, Madagascar', region: 'africa', lat: -18.8792, lng: 47.5079, area: 26000, price: 0.048, verified: true, data_status: 'VERIFIED', score: 91, auditor: 'SCS Global', standard: 'Verra VCS' },
+    { id: 'p45', name: 'Rift Valley Bio-Corridor', type: 'REFORESTATION', location: 'Nakuru, Kenya', region: 'africa', lat: 0.5143, lng: 35.2698, area: 19500, price: 0.042, verified: true, data_status: 'VERIFIED', score: 89, auditor: 'SGS', standard: 'Gold Standard' },
+    { id: 'p46', name: 'Karoo Solar Energy Matrix', type: 'SOLAR', location: 'Northern Cape, South Africa', region: 'africa', lat: -31.6000, lng: 22.5000, area: 21000, price: 0.033, verified: false, data_status: 'DEMO', score: 84, auditor: 'Pending', standard: 'Gold Standard' },
+    { id: 'p47', name: 'Dubai Solar Park & Green Hydrogen', type: 'SOLAR', location: 'Dubai, UAE', region: 'africa', lat: 24.9500, lng: 55.3300, area: 16000, price: 0.039, verified: true, data_status: 'VERIFIED', score: 95, auditor: 'DNV GL', standard: 'Gold Standard' },
+
+    { id: 'p48', name: 'Sumatra Peatland Forest Sink', type: 'REFORESTATION', location: 'Riau, Indonesia', region: 'asia', lat: 0.5897, lng: 101.3431, area: 52000, price: 0.050, verified: true, data_status: 'LIVE', score: 95, auditor: 'Bureau Veritas', standard: 'Verra VCS' },
+    { id: 'p49', name: 'Mekong Delta Mangrove Biosphere', type: 'OCEAN', location: 'Can Tho, Vietnam', region: 'asia', lat: 10.0333, lng: 105.7833, area: 23000, price: 0.046, verified: true, data_status: 'VERIFIED', score: 92, auditor: 'SGS', standard: 'Gold Standard' },
+    { id: 'p50', name: 'Tengger Desert Solar Grid', type: 'SOLAR', location: 'Ningxia, China', region: 'asia', lat: 37.5000, lng: 105.0000, area: 43000, price: 0.031, verified: true, data_status: 'VERIFIED', score: 90, auditor: 'TÜV Rheinland', standard: 'Gold Standard' },
+    { id: 'p51', name: 'Tokyo Cool Roof & Urban Canopy', type: 'URBAN_HEAT', location: 'Tokyo, Japan', region: 'asia', lat: 35.6762, lng: 139.6503, area: 5600, price: 0.055, verified: true, data_status: 'VERIFIED', score: 97, auditor: 'EY Climate', standard: 'Gold Standard' },
+    { id: 'p52', name: 'Seoul River Ecosystem Canopy', type: 'URBAN_HEAT', location: 'Seoul, South Korea', region: 'asia', lat: 37.5665, lng: 126.9780, area: 4200, price: 0.048, verified: true, data_status: 'VERIFIED', score: 94, auditor: 'DNV GL', standard: 'Gold Standard' },
+    { id: 'p53', name: 'Singapore High-Rise Green Matrix', type: 'URBAN_HEAT', location: 'Singapore', region: 'asia', lat: 1.3521, lng: 103.8198, area: 2800, price: 0.060, verified: true, data_status: 'LIVE', score: 99, auditor: 'Bureau Veritas', standard: 'Gold Standard' },
+    { id: 'p54', name: 'Gansu Wind Corridor Complex', type: 'WIND', location: 'Gansu, China', region: 'asia', lat: 40.0000, lng: 97.0000, area: 65000, price: 0.029, verified: true, data_status: 'VERIFIED', score: 88, auditor: 'SGS', standard: 'CAR' },
+    { id: 'p55', name: 'Loess Plateau Terraced Afforestation', type: 'BARREN_RESTORE', location: 'Shaanxi, China', region: 'asia', lat: 36.0000, lng: 109.0000, area: 88000, price: 0.036, verified: true, data_status: 'VERIFIED', score: 93, auditor: 'TÜV Süd', standard: 'Verra VCS' },
+    { id: 'p56', name: 'Borneo Rainforest Sanctuary', type: 'REFORESTATION', location: 'Kalimantan, Indonesia', region: 'asia', lat: 0.9632, lng: 114.5621, area: 74000, price: 0.053, verified: true, data_status: 'VERIFIED', score: 96, auditor: 'Rainforest Alliance', standard: 'Plan Vivo' },
+    { id: 'p57', name: 'Palawan Marine & Mangrove Blue Carbon', type: 'OCEAN', location: 'Palawan, Philippines', region: 'asia', lat: 9.8345, lng: 118.7384, area: 18000, price: 0.047, verified: false, data_status: 'DEMO', score: 81, auditor: 'Pending', standard: 'Verra VCS' },
+
+    { id: 'p58', name: 'Queensland Great Barrier Coastal Mangrove', type: 'OCEAN', location: 'Queensland, Australia', region: 'oceania', lat: -18.2871, lng: 147.6992, area: 34000, price: 0.056, verified: true, data_status: 'VERIFIED', score: 95, auditor: 'Bureau Veritas', standard: 'Gold Standard' },
+    { id: 'p59', name: 'Outback Soil Biochar Sequestration', type: 'BARREN_RESTORE', location: 'Northern Territory, Australia', region: 'oceania', lat: -25.2744, lng: 133.7751, area: 110000, price: 0.028, verified: false, data_status: 'DEMO', score: 77, auditor: 'Pending', standard: 'ACR' },
+    { id: 'p60', name: 'Melbourne Cool Canopy Network', type: 'URBAN_HEAT', location: 'Victoria, Australia', region: 'oceania', lat: -37.8136, lng: 144.9631, area: 4900, price: 0.045, verified: true, data_status: 'VERIFIED', score: 93, auditor: 'SCS Global', standard: 'Gold Standard' },
+    { id: 'p61', name: 'Tasmania Rainforest Protection', type: 'REFORESTATION', location: 'Tasmania, Australia', region: 'oceania', lat: -42.0409, lng: 146.8087, area: 31000, price: 0.054, verified: true, data_status: 'VERIFIED', score: 97, auditor: 'DNV GL', standard: 'Verra VCS' },
+    { id: 'p62', name: 'Northern Territory Solar Grid', type: 'SOLAR', location: 'Tennant Creek, Australia', region: 'oceania', lat: -12.4634, lng: 130.8456, area: 28000, price: 0.034, verified: true, data_status: 'VERIFIED', score: 91, auditor: 'TÜV Rheinland', standard: 'Gold Standard' },
+    { id: 'p63', name: 'Canterbury Native Rimu Regeneration', type: 'REFORESTATION', location: 'Canterbury, New Zealand', region: 'oceania', lat: -43.5321, lng: 172.6362, area: 19000, price: 0.051, verified: true, data_status: 'VERIFIED', score: 96, auditor: 'SGS', standard: 'Gold Standard' }
+  ];
+
+  const globalRegions = [
+    { name: 'North America', regionKey: 'americas', latMin: 25, latMax: 60, lngMin: -125, lngMax: -75 },
+    { name: 'South America', regionKey: 'americas', latMin: -35, latMax: 10, lngMin: -75, lngMax: -40 },
+    { name: 'Europe', regionKey: 'europe', latMin: 38, latMax: 65, lngMin: -10, lngMax: 30 },
+    { name: 'Africa', regionKey: 'africa', latMin: -30, latMax: 30, lngMin: -15, lngMax: 45 },
+    { name: 'Asia', regionKey: 'asia', latMin: 5, latMax: 45, lngMin: 65, lngMax: 140 },
+    { name: 'Australia & Oceania', regionKey: 'oceania', latMin: -40, latMax: -10, lngMin: 115, lngMax: 175 }
+  ];
+
+  const projectTypes = ['REFORESTATION', 'SOLAR', 'WIND', 'OCEAN', 'METHANE', 'ENERGY_EFFICIENCY', 'URBAN_HEAT', 'BARREN_RESTORE'];
+  const sellers = ['EcoGlobe Corp', 'BioCarbon Trust', 'CleanEnergy Capital', 'PlanetOffset Ltd', 'Verdant Earth Foundation'];
+
+  for (let i = 64; i <= 135; i++) {
+    const reg = globalRegions[i % globalRegions.length];
+    const type = projectTypes[i % projectTypes.length];
+    const lat = parseFloat((reg.latMin + Math.abs(Math.sin(i * 1.7 + 0.3)) * (reg.latMax - reg.latMin)).toFixed(4));
+    const lng = parseFloat((reg.lngMin + Math.abs(Math.cos(i * 2.3 + 0.8)) * (reg.lngMax - reg.lngMin)).toFixed(4));
+    const score = Math.floor(75 + (i * 11) % 24);
+    const verified = score >= 82;
+
+    additionalProjects.push({
+      id: 'p' + i,
+      name: `${reg.name} ${type.replace('_', ' ')} Site #${i}`,
+      type: type,
+      location: `${reg.name} Sector ${i}`,
+      region: reg.regionKey,
+      lat: lat,
+      lng: lng,
+      area: Math.floor(1200 + (i * 470) % 18000),
+      price: parseFloat((0.025 + (i % 15) * 0.002).toFixed(3)),
+      verified: verified,
+      data_status: verified ? 'VERIFIED' : 'DEMO',
+      score: score,
+      auditor: verified ? 'Bureau Veritas' : 'Pending',
+      standard: verified ? 'Verra VCS' : 'Gold Standard'
+    });
+  }
+
+  additionalProjects.forEach(p => {
+    const totalCreds = Math.floor(p.area * 1.5);
+    const availCreds = Math.floor(totalCreds * 0.65);
+
+    MOCK_PROJECTS.push({
+      id: p.id,
+      name: p.name,
+      type: p.type,
+      location: p.location,
+      region: p.region,
+      available_credits: availCreds,
+      total_credits: totalCreds,
+      price_per_credit: p.price,
+      co2_tonnes: availCreds,
+      verified: p.verified,
+      data_status: p.data_status,
+      seller_name: sellers[parseInt(p.id.replace('p', '')) % sellers.length],
+      vintage_year: 2023 + (parseInt(p.id.replace('p', '')) % 3)
+    });
+
+    EVIDENCE_VAULT[p.id] = {
+      score: p.score,
+      label: p.score >= 90 ? 'Excellent' : (p.score >= 82 ? 'Very Good' : 'Audited'),
+      sat_dates: ['2024-03', '2024-09'],
+      iot_sensors: Math.floor(6 + (p.area % 25)),
+      auditor: p.auditor,
+      standard: p.standard,
+      ipfs: 'Qm' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+      gps: `${Math.abs(p.lat).toFixed(4)}° ${p.lat >= 0 ? 'N' : 'S'}, ${Math.abs(p.lng).toFixed(4)}° ${p.lng >= 0 ? 'E' : 'W'}`,
+      lat: p.lat,
+      lng: p.lng,
+      area_ha: p.area,
+      trees_count: p.type === 'REFORESTATION' ? Math.floor(p.area * 450) : 0,
+      co2_verified: p.verified
+    };
+  });
+})();
+
 // TOKEN LEDGER — Problem A: Each credit is a unique, single-owner token
 let TOKEN_LEDGER = [];
 (function initLedger() {
@@ -2991,16 +3137,21 @@ async function runAIImageScanWithLambda(fileName) {
 window.runAIImageScan = runAIImageScanWithLambda;
 
 // ═══════════════════════════════════════════════════════════
-// FEATURE: INTERACTIVE ENVIRONMENTAL MAP
+// FEATURE: INTERACTIVE MULTI-SCALE ENVIRONMENTAL MAP
 // ═══════════════════════════════════════════════════════════
 let ecoMapInstance = null;
 let ecoMapTileLayers = {};
 let ecoCurrentBasemap = 'osm';
-let ecoMarkersLayer = null;
+let ecoMarkersClusterGroup = null;
 let ecoCirclesLayer = null;
+let ecoParcelGeoJsonLayer = null;
 let ecoActiveFilter = 'all';
+let ecoActiveRegion = 'all';
 let ecoMarkerRegistry = {};
 let ecoShowCanopy = true;
+let ecoSelectedProjectId = null;
+let ecoSelectedParcelId = null;
+let parcelGeoJsonCache = {};
 
 const ECO_BASEMAPS = {
   osm: {
@@ -3017,9 +3168,11 @@ const ECO_TYPE_THEMES = {
   REFORESTATION: { color: '#22c55e', glow: 'rgba(34, 197, 94, 0.45)', icon: '🌳', label: 'Reforestation' },
   SOLAR: { color: '#f59e0b', glow: 'rgba(245, 158, 11, 0.45)', icon: '☀️', label: 'Solar' },
   WIND: { color: '#38bdf8', glow: 'rgba(56, 189, 248, 0.45)', icon: '💨', label: 'Wind' },
-  OCEAN: { color: '#3b82f6', glow: 'rgba(59, 130, 246, 0.45)', icon: '🌊', label: 'Ocean Sink' },
+  OCEAN: { color: '#3b82f6', glow: 'rgba(59, 130, 246, 0.45)', icon: '🌊', label: 'Mangrove & Ocean' },
   METHANE: { color: '#a855f7', glow: 'rgba(168, 85, 247, 0.45)', icon: '♻️', label: 'Methane Capture' },
-  ENERGY_EFFICIENCY: { color: '#14b8a6', glow: 'rgba(20, 184, 166, 0.45)', icon: '⚡', label: 'Efficiency' }
+  ENERGY_EFFICIENCY: { color: '#14b8a6', glow: 'rgba(20, 184, 166, 0.45)', icon: '⚡', label: 'Efficiency' },
+  URBAN_HEAT: { color: '#ec4899', glow: 'rgba(236, 72, 153, 0.45)', icon: '🏙️', label: 'Urban Heat Reduction' },
+  BARREN_RESTORE: { color: '#eab308', glow: 'rgba(234, 179, 8, 0.45)', icon: '🏜️', label: 'Barren Restoration' }
 };
 
 function loadEcoMap() {
@@ -3034,45 +3187,311 @@ function loadEcoMap() {
   if (!ecoMapInstance) {
     try {
       ecoMapInstance = L.map('eco-map-canvas', {
-        center: [21.5, 78.5],
-        zoom: 5,
+        center: [20.0, 15.0],
+        zoom: 3,
         zoomControl: false,
         scrollWheelZoom: true
       });
 
-      // Add custom zoom control in top-right
       L.control.zoom({ position: 'topright' }).addTo(ecoMapInstance);
 
-      // Add default OpenStreetMap basemap
       ecoMapTileLayers['osm'] = L.tileLayer(ECO_BASEMAPS.osm.url, ECO_BASEMAPS.osm.opts).addTo(ecoMapInstance);
 
-      // Create layer groups
       ecoCirclesLayer = L.layerGroup().addTo(ecoMapInstance);
-      ecoMarkersLayer = L.layerGroup().addTo(ecoMapInstance);
+      ecoParcelGeoJsonLayer = L.layerGroup().addTo(ecoMapInstance);
+
+      if (typeof L.markerClusterGroup === 'function') {
+        ecoMarkersClusterGroup = L.markerClusterGroup({
+          disableClusteringAtZoom: 12,
+          spiderfyOnMaxZoom: true,
+          showCoverageOnHover: false,
+          maxClusterRadius: 48,
+          iconCreateFunction: function (cluster) {
+            const count = cluster.getChildCount();
+            return L.divIcon({
+              html: `<div class="eco-cluster-badge"><span>${count}</span></div>`,
+              className: 'eco-cluster-wrap',
+              iconSize: [38, 38]
+            });
+          }
+        });
+        ecoMapInstance.addLayer(ecoMarkersClusterGroup);
+      } else {
+        ecoMarkersClusterGroup = L.layerGroup().addTo(ecoMapInstance);
+      }
+
+      ecoMapInstance.on('zoomend moveend', handleEcoMapZoomChange);
     } catch (err) {
       console.warn('Eco Map Leaflet init:', err);
     }
   }
 
-  // Refresh sizing after page becomes visible
   setTimeout(() => {
     if (ecoMapInstance) {
       ecoMapInstance.invalidateSize();
-      resetEcoMapView();
     }
   }, 200);
 
-  // Render KPIs, markers, and sidebar list
   updateEcoMapKpis();
   renderEcoMapMarkers();
   renderEcoParcelList();
 
-  // Auto-select first project for telemetry
   const firstProject = state.allProjects[0];
   if (firstProject && EVIDENCE_VAULT[firstProject.id]) {
     const ev = EVIDENCE_VAULT[firstProject.id];
     fetchParcelTelemetry(ev.lat, ev.lng, firstProject.name);
   }
+}
+
+function handleEcoMapZoomChange() {
+  if (!ecoMapInstance) return;
+  const zoom = ecoMapInstance.getZoom();
+  const lodText = document.getElementById('ecoLodStatusText');
+
+  if (zoom < 7) {
+    if (lodText) lodText.textContent = 'GLOBAL VIEW (Clustered Pins)';
+    clearParcelPolygons();
+  } else if (zoom < 12) {
+    if (lodText) lodText.textContent = 'REGIONAL VIEW (Canopy Circles)';
+    clearParcelPolygons();
+  } else {
+    if (lodText) lodText.textContent = 'PARCEL VIEW (GeoJSON Polygons)';
+    renderVisibleParcelPolygons();
+  }
+}
+
+function clearParcelPolygons() {
+  if (ecoParcelGeoJsonLayer) {
+    ecoParcelGeoJsonLayer.clearLayers();
+  }
+}
+
+function showEcoMapLoader(message) {
+  const loader = document.getElementById('ecoMapLoader');
+  const msgEl = document.getElementById('ecoLoaderText');
+  if (msgEl) msgEl.textContent = message || 'Loading High-Resolution Parcel Data...';
+  if (loader) loader.style.display = 'flex';
+}
+
+function hideEcoMapLoader() {
+  const loader = document.getElementById('ecoMapLoader');
+  if (loader) loader.style.display = 'none';
+}
+
+function generateParcelsForProject(project) {
+  if (parcelGeoJsonCache[project.id]) {
+    return parcelGeoJsonCache[project.id];
+  }
+
+  const ev = EVIDENCE_VAULT[project.id] || {};
+  const centerLat = ev.lat !== undefined ? ev.lat : (ev.gps_lat || 20.0);
+  const centerLng = ev.lng !== undefined ? ev.lng : (ev.gps_lng || 78.0);
+  const isVerified = project.verified && (project.data_status === 'VERIFIED' || project.data_status === 'LIVE');
+
+  const features = [];
+  const parcelCount = 3 + Math.abs(hashCode(project.id)) % 3;
+  const baseArea = Math.round((ev.area_ha || 1200) / parcelCount);
+  const delta = 0.008 + (Math.abs(hashCode(project.name)) % 5) * 0.002;
+
+  const offsets = [
+    { dLat: 0, dLng: 0 },
+    { dLat: delta * 0.9, dLng: delta * 1.1 },
+    { dLat: -delta * 1.1, dLng: delta * 0.8 },
+    { dLat: delta * 0.8, dLng: -delta * 1.2 },
+    { dLat: -delta * 0.9, dLng: -delta * 0.9 }
+  ];
+
+  for (let i = 0; i < parcelCount; i++) {
+    const off = offsets[i % offsets.length];
+    const pLat = centerLat + off.dLat;
+    const pLng = centerLng + off.dLng;
+    const pId = `PARCEL-${project.id.toUpperCase()}-${String.fromCharCode(65 + i)}`;
+
+    const r1 = 0.0035 + (i * 0.0006);
+    const r2 = 0.0040 + (i * 0.0004);
+    const coords = [
+      [pLng - r1, pLat - r2],
+      [pLng + r2 * 0.9, pLat - r1 * 1.1],
+      [pLng + r1 * 1.2, pLat + r2 * 0.8],
+      [pLng - r2 * 0.8, pLat + r1 * 1.1],
+      [pLng - r1, pLat - r2]
+    ];
+
+    const ndviVal = (0.64 + ((i * 17 + Math.abs(hashCode(pId))) % 30) * 0.01).toFixed(2);
+    const areaHa = Math.round(baseArea * (0.8 + (i % 3) * 0.15));
+    const seqRate = (12.5 + (i * 3.4 + Math.abs(hashCode(project.id)) % 15)).toFixed(1);
+
+    features.push({
+      type: 'Feature',
+      id: pId,
+      geometry: {
+        type: 'Polygon',
+        coordinates: [coords]
+      },
+      properties: {
+        parcel_id: pId,
+        project_id: project.id,
+        project_name: project.name,
+        project_type: project.type,
+        location: project.location,
+        area_ha: areaHa,
+        centroid: [pLat, pLng],
+        land_cover: getLandCoverName(project.type, i),
+        ndvi: parseFloat(ndviVal),
+        condition: parseFloat(ndviVal) > 0.80 ? 'Optimum Canopy' : (parseFloat(ndviVal) > 0.70 ? 'High Biomass' : 'Moderate Regeneration'),
+        restoration_priority: i === 0 ? 'High Priority' : (i === 1 ? 'Critical Zone' : 'Preservation'),
+        carbon_sequestration_potential: `${seqRate} tCO₂/ha/year`,
+        sequestration_assumptions: `Based on IPCC Tier 2 biomass growth model for ${getBiomeName(project.type)} & Sentinel-2 10m multispectral NIR canopy analysis.`,
+        data_status: isVerified ? 'VERIFIED (Audited Parcel Title)' : 'DEMO (Illustrative Demo Polygon)',
+        is_demo: !isVerified,
+        soil_moisture: `${Math.floor(25 + (i * 7 + Math.abs(hashCode(pId))) % 30)}%`,
+        canopy_cover: `${Math.floor(60 + (i * 9 + Math.abs(hashCode(pId))) % 35)}%`,
+        iot_nodes: Math.floor(2 + (i % 4)),
+        auditor: ev.auditor || 'Bureau Veritas',
+        score: ev.score || 90
+      }
+    });
+  }
+
+  const geoJson = { type: 'FeatureCollection', features };
+  parcelGeoJsonCache[project.id] = geoJson;
+  return geoJson;
+}
+
+function hashCode(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) - hash + str.charCodeAt(i);
+    hash |= 0;
+  }
+  return hash;
+}
+
+function getLandCoverName(type, idx) {
+  const covers = {
+    REFORESTATION: ['Native Broadleaf Canopy', 'Secondary Growth Canopy', 'Riparian Forest Zone', 'High Canopy Conifer'],
+    SOLAR: ['Monocrystalline PV Grid A', 'Thin-Film Solar Field', 'Tracked PV Collector Zone', 'BIPV Substation Ring'],
+    WIND: ['Turbine Micro-Grid Ring', 'High Ridge Wind Corridor', 'Offshore Coastal Buffer', 'Substation Interconnect Zone'],
+    OCEAN: ['Dense Coastal Mangrove', 'Tidal Mudflat Biosphere', 'Estuary Blue Carbon Sink', 'Seagrass Meadow'],
+    METHANE: ['Anaerobic Digester Facility', 'Landfill Gas Capture Grid', 'Dairy Effluent Reactor', 'Biogas Compression Hub'],
+    ENERGY_EFFICIENCY: ['Smart Industrial Grid', 'District Thermal Network', 'HVAC Automation Grid', 'LED Infrastructure Ring'],
+    URBAN_HEAT: ['Cool Roof Biosphere', 'Vertical Vegetated Wall', 'Urban Pocket Canopy', 'Permeable Eco-Pavement'],
+    BARREN_RESTORE: ['Arid Soil Stabilization', 'Acacia Dune Anchor', 'Biochar Enriched Scrub', 'Desert Oasis Corridor']
+  };
+  const list = covers[type] || covers.REFORESTATION;
+  return list[idx % list.length];
+}
+
+function getBiomeName(type) {
+  const biomes = {
+    REFORESTATION: 'tropical & temperate forest biomes',
+    SOLAR: 'high-irradiance arid biomes',
+    WIND: 'high-velocity wind corridor biomes',
+    OCEAN: 'coastal marine & mangrove wetland biomes',
+    METHANE: 'agricultural & industrial methane capture systems',
+    ENERGY_EFFICIENCY: 'metropolitan energy efficiency systems',
+    URBAN_HEAT: 'urban heat island mitigation corridors',
+    BARREN_RESTORE: 'semi-arid degraded soil restoration biomes'
+  };
+  return biomes[type] || 'terrestrial ecosystem biomes';
+}
+
+function renderVisibleParcelPolygons(targetProjectId) {
+  if (!ecoMapInstance || !ecoParcelGeoJsonLayer) return;
+  ecoParcelGeoJsonLayer.clearLayers();
+
+  const bounds = ecoMapInstance.getBounds();
+  const visibleProjects = (state.allProjects || MOCK_PROJECTS).filter(p => {
+    if (targetProjectId && p.id !== targetProjectId) return false;
+    if (ecoActiveFilter !== 'all' && p.type !== ecoActiveFilter) return false;
+    if (ecoActiveRegion !== 'all' && p.region !== ecoActiveRegion) return false;
+    const ev = EVIDENCE_VAULT[p.id];
+    if (!ev || ev.lat === undefined || ev.lng === undefined) return false;
+    return targetProjectId ? true : bounds.contains([ev.lat, ev.lng]);
+  });
+
+  if (!visibleProjects.length) return;
+
+  showEcoMapLoader('Loading High-Resolution Parcel Boundaries...');
+
+  setTimeout(() => {
+    visibleProjects.slice(0, 15).forEach(p => {
+      const geoData = generateParcelsForProject(p);
+      const theme = ECO_TYPE_THEMES[p.type] || ECO_TYPE_THEMES.REFORESTATION;
+
+      const layer = L.geoJSON(geoData, {
+        style: function (feature) {
+          return {
+            color: theme.color,
+            weight: 2,
+            opacity: 0.85,
+            fillColor: theme.color,
+            fillOpacity: 0.22,
+            dashArray: feature.properties.is_demo ? '4, 4' : null
+          };
+        },
+        onEachFeature: function (feature, featureLayer) {
+          const props = feature.properties;
+          const statusClass = props.is_demo ? 'demo' : 'verified';
+          const priorityClass = (props.restoration_priority || '').toLowerCase().replace(' ', '');
+
+          const tooltipContent = `<b>${props.parcel_id}</b><br/>Area: ${props.area_ha} ha · NDVI: ${props.ndvi}`;
+          featureLayer.bindTooltip(tooltipContent, { className: 'eco-polygon-tooltip' });
+
+          const popupContent = `
+            <div class="eco-popup-card">
+              <div class="eco-popup-top">
+                <span class="eco-status-tag ${statusClass}">${props.data_status}</span>
+              </div>
+              <div class="eco-popup-title">${props.parcel_id}</div>
+              <div class="eco-popup-loc">📍 ${props.project_name} (${props.location})</div>
+              
+              <div class="eco-parcel-field-grid">
+                <div class="eco-parcel-field">
+                  <div class="eco-field-label">LAND COVER</div>
+                  <div class="eco-field-val">${props.land_cover}</div>
+                </div>
+                <div class="eco-parcel-field">
+                  <div class="eco-field-label">AREA (HA)</div>
+                  <div class="eco-field-val">${props.area_ha} ha</div>
+                </div>
+                <div class="eco-parcel-field">
+                  <div class="eco-field-label">NDVI HEALTH</div>
+                  <div class="eco-field-val" style="color:var(--green)">${props.ndvi} (${props.condition})</div>
+                </div>
+                <div class="eco-parcel-field">
+                  <div class="eco-field-label">PRIORITY</div>
+                  <div class="eco-field-val"><span class="eco-restoration-chip ${priorityClass}">${props.restoration_priority}</span></div>
+                </div>
+              </div>
+
+              <div class="eco-sequestration-box">
+                <div class="eco-field-label">ESTIMATED SEQUESTRATION</div>
+                <div class="eco-sequestration-val">🌱 ${props.carbon_sequestration_potential}</div>
+                <div class="eco-sequestration-basis">${props.sequestration_assumptions}</div>
+              </div>
+
+              <div class="eco-popup-actions">
+                <button class="eco-popup-btn eco-popup-buy-btn" onclick="openBuyModal('${props.project_id}')">🛒 Buy Credits</button>
+                <button class="eco-popup-btn eco-popup-ev-btn" onclick="openEvidenceModal('${props.project_id}')">🛰️ Inspect Vault</button>
+              </div>
+            </div>
+          `;
+
+          featureLayer.bindPopup(popupContent, { maxWidth: 310 });
+
+          featureLayer.on('click', (e) => {
+            highlightEcoParcelCard(props.project_id);
+            fetchParcelTelemetry(props.centroid[0], props.centroid[1], `${props.parcel_id} (${props.project_name})`);
+          });
+        }
+      });
+
+      ecoParcelGeoJsonLayer.addLayer(layer);
+    });
+
+    hideEcoMapLoader();
+  }, 180);
 }
 
 function setEcoBasemap(type) {
@@ -3113,26 +3532,28 @@ function toggleEcoCanopyZones() {
 
 function resetEcoMapView() {
   if (!ecoMapInstance) return;
-  const bounds = L.latLngBounds([]);
-  const projects = (state.allProjects || MOCK_PROJECTS).filter(p => {
-    if (ecoActiveFilter !== 'all' && p.type !== ecoActiveFilter) return false;
-    return true;
-  });
+  ecoMapInstance.flyTo([20.0, 15.0], 3, { duration: 1.2 });
+  clearParcelPolygons();
+}
 
-  projects.forEach(p => {
-    const ev = EVIDENCE_VAULT[p.id];
-    const lat = ev?.lat !== undefined ? ev.lat : ev?.gps_lat;
-    const lng = ev?.lng !== undefined ? ev.lng : ev?.gps_lng;
-    if (lat !== undefined && lng !== undefined && !isNaN(lat) && !isNaN(lng)) {
-      bounds.extend([lat, lng]);
-    }
-  });
+function jumpToEcoRegion(regionKey) {
+  ecoActiveRegion = regionKey;
+  if (!ecoMapInstance) return;
 
-  if (bounds.isValid()) {
-    ecoMapInstance.fitBounds(bounds.pad(0.18));
-  } else {
-    ecoMapInstance.setView([21.5, 78.5], 5);
-  }
+  const regionCenters = {
+    all: { center: [20.0, 15.0], zoom: 3 },
+    asia: { center: [21.5, 78.5], zoom: 5 },
+    americas: { center: [-3.5, -60.0], zoom: 4 },
+    europe: { center: [48.5, 12.0], zoom: 4.5 },
+    africa: { center: [0.0, 20.0], zoom: 4 },
+    oceania: { center: [-25.0, 135.0], zoom: 4 }
+  };
+
+  const target = regionCenters[regionKey] || regionCenters.all;
+  ecoMapInstance.flyTo(target.center, target.zoom, { duration: 1.2 });
+
+  renderEcoMapMarkers();
+  renderEcoParcelList();
 }
 
 function setEcoMapFilter(type, btnEl) {
@@ -3141,7 +3562,6 @@ function setEcoMapFilter(type, btnEl) {
   if (btnEl) btnEl.classList.add('active');
   renderEcoMapMarkers();
   renderEcoParcelList();
-  resetEcoMapView();
 }
 
 function updateEcoMapKpis() {
@@ -3160,20 +3580,21 @@ function updateEcoMapKpis() {
   const statSens = document.getElementById('ecoStatSensors');
   const parcelCount = document.getElementById('ecoParcelCount');
 
-  if (statProj) statProj.textContent = `${projects.length} Sites`;
+  if (statProj) statProj.textContent = `${projects.length} Global Sites`;
   if (statHa) statHa.textContent = `${totalHectares.toLocaleString()} ha`;
-  if (statSens) statSens.textContent = `${totalSensors} Nodes`;
+  if (statSens) statSens.textContent = `${totalSensors.toLocaleString()} Nodes`;
   if (parcelCount) parcelCount.textContent = projects.length;
 }
 
 function renderEcoMapMarkers() {
-  if (!ecoMapInstance || !ecoMarkersLayer || !ecoCirclesLayer) return;
-  ecoMarkersLayer.clearLayers();
+  if (!ecoMapInstance || !ecoMarkersClusterGroup || !ecoCirclesLayer) return;
+  ecoMarkersClusterGroup.clearLayers();
   ecoCirclesLayer.clearLayers();
   ecoMarkerRegistry = {};
 
   const projects = (state.allProjects || MOCK_PROJECTS).filter(p => {
     if (ecoActiveFilter !== 'all' && p.type !== ecoActiveFilter) return false;
+    if (ecoActiveRegion !== 'all' && p.region !== ecoActiveRegion) return false;
     return true;
   });
 
@@ -3189,8 +3610,7 @@ function renderEcoMapMarkers() {
     if (!ev.score || ev.score < 80) scoreColor = '#f59e0b';
     else if (ev.score < 90) scoreColor = '#3b82f6';
 
-    // 1. Circle zone representing reserve hectares
-    const radiusMeters = Math.min(Math.max((ev.area_ha || 150) * 8, 1500), 32000);
+    const radiusMeters = Math.min(Math.max((ev.area_ha || 150) * 6, 1200), 28000);
     const circle = L.circle([lat, lng], {
       radius: radiusMeters,
       color: scoreColor,
@@ -3201,7 +3621,6 @@ function renderEcoMapMarkers() {
     });
     ecoCirclesLayer.addLayer(circle);
 
-    // 2. Custom pulsing pin icon
     const icon = L.divIcon({
       className: 'custom-eco-pin-container',
       html: `<div class="eco-pin-pulse" style="--pin-c:${scoreColor};--pin-g:${theme.glow}"><span class="pin-icon">${theme.icon}</span></div>`,
@@ -3212,12 +3631,15 @@ function renderEcoMapMarkers() {
 
     const marker = L.marker([lat, lng], { icon });
 
-    // 3. Popup
+    const statusBadge = (p.data_status === 'VERIFIED' || p.data_status === 'LIVE')
+      ? `<span class="eco-status-tag verified">VERIFIED SOURCE</span>`
+      : `<span class="eco-status-tag demo">ILLUSTRATIVE DEMO</span>`;
+
     const popupContent = `
       <div class="eco-popup-card">
         <div class="eco-popup-top">
           <span class="eco-popup-tag" style="background:${theme.glow};color:${theme.color}">${theme.icon} ${theme.label}</span>
-          <span style="font-size:10.5px;color:var(--text3);font-family:var(--mono);margin-left:auto;">${p.vintage_year || 2024}</span>
+          ${statusBadge}
         </div>
         <div class="eco-popup-title">${p.name}</div>
         <div class="eco-popup-loc">📍 ${p.location}</div>
@@ -3245,7 +3667,7 @@ function renderEcoMapMarkers() {
         </div>
         <div class="eco-popup-actions">
           <button class="eco-popup-btn eco-popup-buy-btn" onclick="openBuyModal('${p.id}')">🛒 Buy Credits</button>
-          <button class="eco-popup-btn eco-popup-ev-btn" onclick="openEvidenceModal('${p.id}')">🛰️ Inspect Vault</button>
+          <button class="eco-popup-btn eco-popup-ev-btn" onclick="selectEcoParcel('${p.id}')">🔍 Inspect Parcels</button>
         </div>
       </div>
     `;
@@ -3255,9 +3677,10 @@ function renderEcoMapMarkers() {
     marker.on('click', () => {
       highlightEcoParcelCard(p.id);
       fetchParcelTelemetry(lat, lng, p.name);
+      renderVisibleParcelPolygons(p.id);
     });
 
-    ecoMarkersLayer.addLayer(marker);
+    ecoMarkersClusterGroup.addLayer(marker);
     ecoMarkerRegistry[p.id] = marker;
   });
 }
@@ -3268,13 +3691,14 @@ function renderEcoParcelList() {
 
   const projects = (state.allProjects || MOCK_PROJECTS).filter(p => {
     if (ecoActiveFilter !== 'all' && p.type !== ecoActiveFilter) return false;
+    if (ecoActiveRegion !== 'all' && p.region !== ecoActiveRegion) return false;
     return true;
   });
 
   if (!projects.length) {
     container.innerHTML = `
       <div style="text-align:center;padding:32px 16px;color:var(--text3);font-size:13px">
-        No projects found in this category
+        No projects found in this filter category
       </div>
     `;
     return;
@@ -3287,11 +3711,15 @@ function renderEcoParcelList() {
     if (!ev.score || ev.score < 80) scoreColor = '#f59e0b';
     else if (ev.score < 90) scoreColor = '#3b82f6';
 
+    const statusDot = (p.data_status === 'VERIFIED' || p.data_status === 'LIVE')
+      ? `<span title="Verified Source" style="color:var(--green)">✓</span>`
+      : `<span title="Illustrative Demo" style="color:var(--amber)">⚡</span>`;
+
     return `
       <div class="eco-parcel-card" id="eco-card-${p.id}" onclick="selectEcoParcel('${p.id}')">
         <div class="eco-card-top">
           <div class="eco-card-name">${theme.icon} ${p.name}</div>
-          <div class="eco-card-score" style="color:${scoreColor};background:${scoreColor}18">${ev.score || 0}/100</div>
+          <div class="eco-card-score" style="color:${scoreColor};background:${scoreColor}18">${statusDot} ${ev.score || 0}/100</div>
         </div>
         <div class="eco-card-sub">
           <span>📍 ${p.location}</span>
@@ -3326,7 +3754,8 @@ function selectEcoParcel(projectId) {
   highlightEcoParcelCard(projectId);
 
   if (ecoMapInstance) {
-    ecoMapInstance.flyTo([lat, lng], 10, { duration: 1.2 });
+    ecoMapInstance.flyTo([lat, lng], 14, { duration: 1.2 });
+    renderVisibleParcelPolygons(projectId);
     const marker = ecoMarkerRegistry[projectId];
     if (marker) {
       setTimeout(() => marker.openPopup(), 1250);
@@ -3352,7 +3781,6 @@ async function fetchParcelTelemetry(lat, lng, projectName) {
     if (tempEl && data.current) tempEl.textContent = `${data.current.temperature_2m}°C`;
     if (windEl && data.current) windEl.textContent = `${data.current.wind_speed_10m} km/h`;
 
-    // Realistic dynamic AQI formula based on coordinates
     const aqiVal = Math.floor(40 + Math.abs(Math.sin(lat * 1.5 + lng * 0.7) * 95));
     if (aqiEl) {
       aqiEl.textContent = `${aqiVal} AQI (${aqiVal > 100 ? 'Moderate' : 'Good'})`;
@@ -3360,10 +3788,9 @@ async function fetchParcelTelemetry(lat, lng, projectName) {
     }
     if (srcEl) srcEl.textContent = 'Source: Open-Meteo Live API · Sentinel-2 MSI';
   } catch (err) {
-    // Deterministic fallback
     const baseAqi = Math.floor(48 + Math.abs(Math.cos(lat + lng) * 60));
-    if (tempEl) tempEl.textContent = '26.8°C';
-    if (windEl) windEl.textContent = '12.4 km/h';
+    if (tempEl) tempEl.textContent = '24.8°C';
+    if (windEl) windEl.textContent = '11.2 km/h';
     if (aqiEl) {
       aqiEl.textContent = `${baseAqi} AQI (Good)`;
       aqiEl.style.color = 'var(--green)';
